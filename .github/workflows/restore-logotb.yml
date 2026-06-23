@@ -1,0 +1,30 @@
+name: Restore LOGOTB.png from b64 chunks
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Concatenate b64 parts and decode to PNG
+        run: |
+          cat assets/LOGOTB.png.b64.part1 \
+              assets/LOGOTB.png.b64.part2a assets/LOGOTB.png.b64.part2b \
+              assets/LOGOTB.png.b64.part3a assets/LOGOTB.png.b64.part3b \
+              assets/LOGOTB.png.b64.part4a assets/LOGOTB.png.b64.part4b \
+              assets/LOGOTB.png.b64.part5a assets/LOGOTB.png.b64.part5b \
+              assets/LOGOTB.png.b64.part6a assets/LOGOTB.png.b64.part6b \
+              assets/LOGOTB.png.b64.part7 | base64 -d > public/LOGOTB.png
+          ls -la public/LOGOTB.png
+          file public/LOGOTB.png
+      - name: Commit restored PNG
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/LOGOTB.png
+          if ! git diff --staged --quiet; then
+            git commit -m "assets: restore full LOGOTB.png from b64 chunks"
+            git push
+          fi
