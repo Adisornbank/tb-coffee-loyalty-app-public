@@ -1,1 +1,1552 @@
-LOAD_FROM_/private/tmp/mcp_cou_index_args.json
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TB Coffee Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #050b16;
+  --glass: rgba(10, 24, 52, 0.72);
+  --glass-2: rgba(14, 32, 68, 0.55);
+  --text: #f2f6ff;
+  --muted: #8ba0c4;
+  --green: #22c55e;
+  --blue: #3b82f6;
+  --blue-hot: #2563eb;
+  --purple: #a855f7;
+  --orange: #f59e0b;
+  --red: #ef4444;
+  --radius: 16px;
+  --radius-sm: 12px;
+  --font: 'Noto Sans Thai', system-ui, sans-serif;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 90% 55% at 10% -5%, rgba(37, 99, 235, 0.22), transparent 55%),
+    radial-gradient(ellipse 70% 45% at 95% 5%, rgba(245, 158, 11, 0.1), transparent 50%),
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(20, 50, 110, 0.35), transparent 60%),
+    linear-gradient(180deg, #060e1c, #03070f);
+}
+
+/* Phone frame – 390px reference */
+.phone {
+  width: 100%;
+  max-width: 390px;
+  margin: 0 auto;
+  padding: 14px 12px 22px;
+  min-height: 100vh;
+}
+
+/* Glass card + glow border */
+.card {
+  position: relative;
+  background: var(--glass);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.65), rgba(245, 158, 11, 0.45) 40%, rgba(59, 130, 246, 0.25) 70%, rgba(245, 158, 11, 0.35));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Header */
+.top {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 14px;
+}
+
+.logo {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  overflow: visible;
+  flex-shrink: 0;
+  padding: 0;
+  line-height: 0;
+  border: none;
+  background: transparent;
+  box-shadow:
+    0 0 0 1.5px rgba(249, 115, 22, 0.9),
+    0 0 10px rgba(245, 158, 11, 0.65),
+    0 0 18px rgba(245, 158, 11, 0.35),
+    0 0 26px rgba(59, 130, 246, 0.18);
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  display: block;
+  border-radius: 50%;
+  transform: scale(0.88);
+}
+
+.titles { flex: 1; min-width: 0; }
+
+.titles h1 {
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.15;
+  background: linear-gradient(90deg, #fde68a, #f59e0b 55%, #fbbf24);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.titles p {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.online {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--green);
+  white-space: nowrap;
+}
+
+.online i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+}
+
+/* KPI */
+.kpi {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.kpi-card {
+  padding: 11px 10px 8px;
+  overflow: hidden;
+}
+
+.kpi-card p {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 3px;
+}
+
+.kpi-card h2 {
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.kpi-card h2 span {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.k-green {
+  background: linear-gradient(160deg, rgba(34, 197, 94, 0.16), rgba(10, 24, 52, 0.85));
+  border: 1.5px solid rgba(34, 197, 94, 0.55);
+  box-shadow: 0 0 18px rgba(34, 197, 94, 0.18), inset 0 1px 0 rgba(34, 197, 94, 0.12);
+}
+.k-blue {
+  background: linear-gradient(160deg, rgba(59, 130, 246, 0.18), rgba(10, 24, 52, 0.85));
+  border: 1.5px solid rgba(59, 130, 246, 0.55);
+  box-shadow: 0 0 18px rgba(59, 130, 246, 0.18), inset 0 1px 0 rgba(59, 130, 246, 0.12);
+}
+.k-purple {
+  background: linear-gradient(160deg, rgba(168, 85, 247, 0.16), rgba(10, 24, 52, 0.85));
+  border: 1.5px solid rgba(168, 85, 247, 0.55);
+  box-shadow: 0 0 18px rgba(168, 85, 247, 0.18), inset 0 1px 0 rgba(168, 85, 247, 0.12);
+}
+
+.k-green::before, .k-blue::before, .k-purple::before { display: none; }
+
+.k-green h2 { color: var(--green); text-shadow: 0 0 12px rgba(34, 197, 94, 0.35); }
+.k-blue h2 { color: #60a5fa; text-shadow: 0 0 12px rgba(59, 130, 246, 0.35); }
+.k-purple h2 { color: #c084fc; text-shadow: 0 0 12px rgba(168, 85, 247, 0.35); }
+
+/* Colored section borders */
+.border-blue {
+  border: 1.5px solid rgba(59, 130, 246, 0.45);
+  box-shadow: 0 0 16px rgba(59, 130, 246, 0.12);
+}
+.border-blue::before { display: none; }
+
+.border-orange {
+  border: 1.5px solid rgba(245, 158, 11, 0.55);
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.15);
+}
+.border-orange::before { display: none; }
+
+.border-mixed::before {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.5), rgba(245, 158, 11, 0.4), rgba(168, 85, 247, 0.35));
+}
+
+.search.card {
+  border: 1.5px solid rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.08);
+}
+.search.card::before { display: none; }
+
+.chart {
+  display: block;
+  width: 100%;
+  height: 30px;
+  margin-top: 6px;
+}
+
+/* Tabs */
+.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  padding: 4px;
+  margin-bottom: 10px;
+  background: var(--glass-2);
+  border-radius: var(--radius-sm);
+  border: 1.5px solid rgba(59, 130, 246, 0.35);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.08);
+}
+
+.tab {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: linear-gradient(135deg, var(--blue-hot), #1d4ed8);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.45);
+}
+
+/* Search */
+.search {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 13px;
+  margin-bottom: 10px;
+  color: var(--muted);
+}
+
+.search input {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 15px;
+}
+
+.search input::placeholder { color: var(--muted); }
+
+/* Split layout – like Image.png */
+.split {
+  display: grid;
+  grid-template-columns: 0.92fr 1.08fr;
+  gap: 8px;
+  margin-bottom: 10px;
+  align-items: start;
+}
+
+.list {
+  padding: 10px 8px;
+  min-height: 340px;
+  display: flex;
+  flex-direction: column;
+}
+
+.list-scroll {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-height: 300px;
+  scrollbar-width: thin;
+}
+
+.list-scroll.expanded {
+  max-height: min(52vh, 420px);
+}
+
+.customer-item {
+  display: grid;
+  grid-template-columns: 16px 14px 1fr auto;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: var(--glass-2);
+  border-radius: 10px;
+  padding: 8px 7px;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.customer-item .rank {
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.customer-item .star { color: var(--orange); font-size: 11px; }
+.customer-item .star.ghost { opacity: 0; }
+
+.customer-item .name {
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.customer-item .pts {
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.customer-item.active {
+  border: 1.5px solid rgba(59, 130, 246, 0.7);
+  background: rgba(37, 99, 235, 0.22);
+  box-shadow: 0 0 16px rgba(59, 130, 246, 0.28);
+}
+
+.customer-item.active .pts { color: #93c5fd; font-weight: 700; }
+
+.detail-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.detail {
+  padding: 11px 10px;
+}
+
+.detail-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 9px;
+}
+
+.detail-top h2 {
+  font-size: 16px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.detail-top .star { color: var(--orange); font-size: 13px; }
+
+.detail-pts {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--orange);
+  white-space: nowrap;
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+}
+
+.detail-pts span {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.reward {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 10px;
+  margin-bottom: 9px;
+  border-radius: var(--radius-sm);
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.12);
+}
+
+.reward-ico {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(245, 158, 11, 0.2);
+  color: var(--orange);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.reward strong {
+  display: block;
+  font-size: 12px;
+  color: var(--orange);
+}
+
+.reward span {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.progress-wrap label {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.cups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.cup-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.cup-dot.on {
+  background: rgba(245, 158, 11, 0.25);
+  color: var(--orange);
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.25);
+}
+
+.prog-count {
+  font-size: 11px;
+  color: var(--muted);
+  text-align: right;
+  margin-top: 5px;
+}
+
+.tx-block h3 {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 500;
+  margin: 9px 0 6px;
+}
+
+.tx-row {
+  display: grid;
+  grid-template-columns: 36px 1fr 30px 58px;
+  gap: 4px;
+  align-items: center;
+  font-size: 12px;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.tx-row:last-of-type { border-bottom: 0; }
+
+.tx-time { color: var(--muted); font-size: 10px; }
+.tx-name { font-weight: 600; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tx-price { color: var(--muted); text-align: right; font-size: 10px; }
+.tx-pts { font-weight: 700; text-align: right; font-size: 10px; }
+.tx-row.paid .tx-pts { color: var(--green); }
+.tx-row.free .tx-pts { color: var(--red); }
+
+.empty-tx {
+  font-size: 12px;
+  color: var(--muted);
+  padding: 6px 0;
+}
+
+.link-btn {
+  border: 0;
+  background: none;
+  color: var(--blue);
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  margin-top: 6px;
+}
+
+.link-btn.center {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* Formula */
+.formula-card {
+  padding: 14px 12px;
+  margin-bottom: 10px;
+  background: linear-gradient(160deg, rgba(37, 99, 235, 0.2), rgba(10, 24, 52, 0.9));
+  border: 1.5px solid rgba(59, 130, 246, 0.55);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.2), inset 0 1px 0 rgba(147, 197, 253, 0.1);
+}
+
+.formula-card::before { display: none; }
+
+.formula-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #93c5fd;
+  margin-bottom: 10px;
+}
+
+.formula-ico {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, 0.25);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  display: grid;
+  place-items: center;
+  color: #93c5fd;
+  flex-shrink: 0;
+}
+
+.formula-rule {
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.formula-eq {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.formula-eq.big {
+  padding: 8px 0 4px;
+}
+
+.formula-eq em {
+  font-style: normal;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.formula-eq i {
+  font-style: normal;
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.c-green { color: var(--green); }
+.c-orange { color: var(--orange); }
+.c-red { color: var(--red); }
+.c-blue { color: #60a5fa; }
+
+.formula-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.formula-grid div {
+  text-align: center;
+  padding: 8px 4px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+}
+
+.formula-grid small {
+  display: block;
+  font-size: 9px;
+  color: var(--muted);
+  line-height: 1.3;
+  margin-bottom: 3px;
+}
+
+.formula-grid strong { font-size: 14px; }
+
+/* Sales tab */
+.sales-tab {
+  padding: 12px 10px;
+  min-height: 200px;
+}
+
+.sales-tab h3 {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.sales-total {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--green);
+  margin-bottom: 10px;
+}
+
+.sales-total span {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Paste */
+.paste {
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.paste-head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 13px;
+  border: 0;
+  background: linear-gradient(135deg, rgba(217, 119, 6, 0.35), rgba(245, 158, 11, 0.22));
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.paste-ico {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--orange);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.paste-head strong {
+  display: block;
+  font-size: 14px;
+  color: #fde68a;
+}
+
+.paste-head small {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 1px;
+}
+
+.paste .arrow {
+  margin-left: auto;
+  font-size: 22px;
+  color: var(--orange);
+  transition: transform 0.2s;
+}
+
+.paste.open .arrow { transform: rotate(90deg); }
+
+.paste-body {
+  display: none;
+  padding: 0 13px 13px;
+}
+
+.paste.open .paste-body { display: block; }
+
+.paste-body textarea {
+  width: 100%;
+  min-height: 80px;
+  margin-top: 8px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  resize: vertical;
+  outline: none;
+}
+
+.paste-msg {
+  margin: 8px 0 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.paste-msg.ok {
+  color: #86efac;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+.paste-msg.err {
+  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.btn-confirm {
+  display: block;
+  width: 100%;
+  margin-top: 9px;
+  padding: 11px;
+  border: 0;
+  border-radius: 11px;
+  background: linear-gradient(135deg, var(--blue-hot), var(--blue));
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4);
+}
+
+/* Footer */
+.foot {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 12px 8px;
+  text-align: center;
+}
+
+.foot span { font-size: 16px; display: block; margin-bottom: 3px; }
+
+.foot small {
+  display: block;
+  font-size: 9px;
+  color: var(--muted);
+  line-height: 1.25;
+}
+
+.foot b {
+  display: block;
+  font-size: 11px;
+  margin-top: 2px;
+  line-height: 1.3;
+}
+
+/* Wider screens – still phone-first proportions */
+@media (min-width: 391px) {
+  .phone {
+    padding-top: 18px;
+    padding-bottom: 28px;
+  }
+}
+</style>
+</head>
+<body>
+  <div id="app"></div>
+  <script>const CUSTOMER_ALIASES = {
+  รุจ: 'พี่รุจ',
+  'ทราย หมาพี': 'ทรายหมาพี',
+};
+
+function cleanText(value) {
+  return value.trim().replace(/\s+/g, ' ');
+}
+
+function normalizeCustomerName(value) {
+  const cleaned = cleanText(value);
+  return CUSTOMER_ALIASES[cleaned] ?? cleaned;
+}
+
+function parseOrderDetails(details) {
+  const text = cleanText(details);
+
+  const freeExplicit = text.match(/^(.+?)\s+ฟรี\s+(.+)$/iu);
+  if (freeExplicit) {
+    return {
+      productName: cleanText(freeExplicit[1]),
+      price: 0,
+      customerName: normalizeCustomerName(freeExplicit[2]),
+      isFree: true,
+    };
+  }
+
+  const priced = text.match(/^(.+?)\s+(\d{1,3})\s*(?:บาท)?\s*(.+)$/iu);
+  if (!priced) return null;
+
+  const price = Number(priced[2]);
+  let customerPart = cleanText(priced[3]).replace(/^บาท\s*/iu, '');
+
+  if (/^ฟรี\s+/iu.test(customerPart)) {
+    customerPart = customerPart.replace(/^ฟรี\s+/iu, '');
+    return {
+      productName: cleanText(priced[1]),
+      price: 0,
+      customerName: normalizeCustomerName(customerPart),
+      isFree: true,
+    };
+  }
+
+  return {
+    productName: cleanText(priced[1]),
+    price,
+    customerName: normalizeCustomerName(customerPart),
+    isFree: price === 0,
+  };
+}
+
+function parseOrderLine(line) {
+  const orderMatch = line.match(/^(\d+)\s*[.)]\s*(.+)$/u);
+  if (!orderMatch) return null;
+
+  const parsed = parseOrderDetails(orderMatch[2]);
+  if (!parsed?.customerName || !parsed.productName) return null;
+
+  return {
+    orderNumber: Number(orderMatch[1]),
+    ...parsed,
+    sourceLine: line,
+  };
+}
+
+function parseSalesText(input, fallbackDate = '') {
+  const lines = input.split(/\r?\n/).map((line) => cleanText(line)).filter(Boolean);
+  const days = [];
+  const looseLines = [];
+
+  let currentDay = null;
+  let parsingOtherItems = false;
+
+  for (const line of lines) {
+    if (/^\d{1,2}\s*\/\s*\d{1,2}\s*\/\s*\d{2,4}$/u.test(line)) {
+      currentDay = {
+        date: line.replace(/\s+/g, ''),
+        items: [],
+        unparsedLines: [],
+      };
+      days.push(currentDay);
+      parsingOtherItems = false;
+      continue;
+    }
+
+    if (/^อื่น\s*ๆ$/iu.test(line.replace(/\s+/g, ''))) {
+      parsingOtherItems = true;
+      continue;
+    }
+
+    if (parsingOtherItems) {
+      if (currentDay) currentDay.unparsedLines.push(line);
+      else looseLines.push(line);
+      continue;
+    }
+
+    const parsed = parseOrderLine(line);
+    if (!parsed) {
+      if (currentDay) currentDay.unparsedLines.push(line);
+      else looseLines.push(line);
+      continue;
+    }
+
+    if (!currentDay) {
+      currentDay = {
+        date: fallbackDate,
+        items: [],
+        unparsedLines: [],
+      };
+      days.push(currentDay);
+    }
+
+    currentDay.items.push({
+      orderNumber: parsed.orderNumber,
+      productName: parsed.productName,
+      price: parsed.price,
+      customerName: parsed.customerName,
+      isFree: parsed.isFree,
+      sourceLine: parsed.sourceLine,
+    });
+  }
+
+  return { days, looseLines };
+}
+
+function summarizeDay(day) {
+  const customerMap = new Map();
+  let totalRevenue = 0;
+  let paidCups = 0;
+  let freeCups = 0;
+
+  for (const item of day?.items ?? []) {
+    const paidAmount = item.isFree ? 0 : item.price;
+    totalRevenue += paidAmount;
+
+    if (item.isFree) freeCups += 1;
+    else paidCups += 1;
+
+    const existing = customerMap.get(item.customerName);
+    if (existing) {
+      existing.paidCups += item.isFree ? 0 : 1;
+      existing.freeCups += item.isFree ? 1 : 0;
+      existing.totalSpent += paidAmount;
+      existing.items.push(item);
+    } else {
+      customerMap.set(item.customerName, {
+        customerName: item.customerName,
+        paidCups: item.isFree ? 0 : 1,
+        freeCups: item.isFree ? 1 : 0,
+        totalSpent: paidAmount,
+        items: [item],
+      });
+    }
+  }
+
+  return {
+    totalRevenue,
+    paidCups,
+    freeCups,
+    totalItems: paidCups + freeCups,
+    uniqueCustomers: customerMap.size,
+    customers: Array.from(customerMap.values()),
+  };
+}
+const META = {
+  updateDate: '19/06/2569',
+  updateTime: '',
+};
+
+const RAW = `หมู	30
+เจ้ต่าย	30
+เจ้เต๋า	26
+ป้าจอย	25
+หมวย	23
+สท.ต่าย	23
+เท่ห์	22
+ประภา	21
+ป้าหนู	21
+พี่แดง	19
+แตงโม	19
+ครูยุ้ย	19
+ครูต๋อง	19
+ศรีแพร	19
+พี่แขก	19
+พลอย	17
+กุ๊ก	17
+ป.ปุ๋ย	17
+อ๊อฟ	17
+ศูนย์เด็กเล็ก	16
+พี่บอล	16
+ปอย	16
+ครูเคน	15
+อาทุย	15
+แพร	15
+คุณหอม	15
+อาไฝ	13
+น้ำ	13
+ยุ้ย	13
+ดำ	13
+ป้าเฟิร์น	12
+ลุงวิญญู	12
+สวน	12
+ไอซ์	12
+เฮียหมุ่ย	12
+โจ๊ก พังราด	12
+กุ้ง	12
+พี่กานดา flash	11
+ลุงคต	10
+พี่เงาะ	10
+จ๊ะจ๋า	10
+มดแดง	10
+ลุงหนึ่ง	10
+เจ้ปุ๊	9
+แคท	9
+แนน es	9
+อั้ม อนามัย	9
+เฟิน (ป้าหน่อย)	9
+วีระ	9
+พี่บอย	8
+ช่างเอ	8
+อัง	8
+หนุ่ม อนามัย	8
+ต้า	8
+ครีมอนามัยกระแจะ	8
+อลิซ	8
+ทราย	8
+พี่แนน	8
+ปากหมู	8
+กิ	8
+เจ้สัจจะ	8
+ครูบลู	8
+อาไล	7
+โรงหมู	7
+โบว์ อนามัย	7
+ป้าหนู (ลุงจ๋า)	7
+ออม ร้านปลาย	7
+เจ้วาสนา	7
+ทรายหมาพี	7
+พังราด	6
+เจ้แอน	6
+เจ้ปูนิ่ม	6
+เจ้จุ่มจิ้ม	6
+ลุงแปร์	6
+ลองกอง	6
+อัง อนามัย	6
+เจ้แดง	6
+ลุงเทพ	6
+นุ้ย เทศบาล	6
+เจ้น้อง	6
+ครูหนองไทร	6
+อาก้อย	5
+ปิ๊ก	5
+พี่อ้อย	5
+กิ๊บ	5
+เจ้กิ่ง	5
+เด็กๆ	4
+อนามัย	4
+นิชา	4
+พี่เมืองไทย	4
+ปลั๊ก	4
+รพ.	4
+มิกซ์	4
+ฝน	4
+แอน	4
+ลาบ	4
+ปีโป้	3
+คิว	3
+เจ้เก๋ มี.5	3
+เฮียแจ๊ค จุรีย์	3
+กี้	3
+มะเหมี่ยว	3
+ป้ากุหลาบ	3
+มด	3
+มัด	3
+นิ่ม	3
+พี่พู่	2
+กะเต๋า	2
+ดาม	2
+อาร์ท	2
+หนองไทร	2
+เจ้บิ๋ม	2
+ป้าหน่อย	2
+ครูไบร์ท	2
+โบ๊ท	2
+มิ้ว	2
+ทรายกิ	2
+เจ้นก	1
+นุ่น	1
+เจ้หนึ่ง	1
+เฮียเอก	1
+ครูก้อย	1
+อาส่ง	1
+เฮียแจ็ค	0
+พี่รุจ	0`;
+
+function buildCustomers() {
+  const rows = RAW.trim().split('\n').map((line) => {
+    const [name, cups] = line.split('\t');
+    return { name, cups: Number(cups) };
+  });
+
+  return rows.map((row, i) => ({
+    name: row.name,
+    rank: i + 1,
+    cups: row.cups,
+    star: i === 0,
+    pointsOriginal: row.cups,
+    paidCups: 0,
+    freeCupsUsed: 0,
+    totalOrdered: 0,
+    confirmed: false,
+    transactions: [],
+  }));
+}
+
+const customers = buildCustomers();
+
+const STATS = {
+  totalCustomers: customers.length,
+  totalPoints: customers.reduce((s, c) => s + c.cups, 0),
+};
+
+const KPI = {
+  sales: 0,
+  cups: 0,
+  customers: 0,
+};
+
+function calcPoints(data) {
+  const pointsAdded = data.paidCups;
+  const pointsUsed = data.freeCupsUsed * 10;
+  const pointsRemaining = data.pointsOriginal + pointsAdded - pointsUsed;
+  const progress = ((pointsRemaining % 10) + 10) % 10;
+  const reward = Math.floor(Math.max(pointsRemaining, 0) / 10);
+  return { pointsAdded, pointsUsed, pointsRemaining, progress, reward };
+}
+
+function findCustomer(name, list = customers) {
+  const target = name.trim();
+  if (!target) return null;
+
+  let found = list.find((c) => c.name === target);
+  if (found) return found;
+
+  const lower = target.toLocaleLowerCase('th');
+  found = list.find((c) => c.name.toLocaleLowerCase('th') === lower);
+  if (found) return found;
+
+  found = list.find((c) => c.name.includes(target) || target.includes(c.name));
+  return found ?? null;
+}
+
+function formatTxTime(orderNumber) {
+  const hour = 8 + Math.floor(orderNumber / 6);
+  const minute = (orderNumber * 7) % 60;
+  return `${String(Math.min(hour, 20)).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+}
+
+function resetDailySales() {
+  for (const customer of customers) {
+    customer.paidCups = 0;
+    customer.freeCupsUsed = 0;
+    customer.totalOrdered = 0;
+    customer.transactions = [];
+    customer.confirmed = false;
+    customer.unknownName = false;
+  }
+}
+
+function applyDailySales(dayItems) {
+  const warnings = [];
+  const appliedCustomers = new Set();
+
+  resetDailySales();
+
+  for (const item of dayItems) {
+    const customer = findCustomer(item.customerName);
+    if (!customer) {
+      warnings.push(`ไม่พบลูกค้า "${item.customerName}" (${item.sourceLine})`);
+      continue;
+    }
+
+    customer.totalOrdered += 1;
+    if (item.isFree) {
+      customer.freeCupsUsed += 1;
+    } else {
+      customer.paidCups += 1;
+    }
+
+    customer.transactions.push({
+      time: formatTxTime(item.orderNumber ?? customer.transactions.length + 1),
+      name: item.productName,
+      price: item.isFree ? 'ฟรี' : item.price,
+      change: item.isFree ? '−10 แต้ว' : '+1 แต้ว',
+      type: item.isFree ? 'free' : 'paid',
+    });
+
+    customer.transactions.sort((a, b) => a.time.localeCompare(b.time));
+    customer.confirmed = true;
+    appliedCustomers.add(customer.name);
+
+    const calc = calcPoints(customer);
+    customer.cups = calc.pointsRemaining;
+  }
+
+  sortCustomersByPoints();
+  recalcStats();
+
+  return {
+    warnings,
+    appliedCount: dayItems.length - warnings.length,
+    customerCount: appliedCustomers.size,
+  };
+}
+
+function sortCustomersByPoints() {
+  customers.sort((a, b) => b.cups - a.cups || a.name.localeCompare(b.name, 'th'));
+  customers.forEach((customer, index) => {
+    customer.rank = index + 1;
+    customer.star = index === 0;
+  });
+}
+
+function recalcStats() {
+  STATS.totalCustomers = customers.length;
+  STATS.totalPoints = customers.reduce((sum, customer) => sum + customer.cups, 0);
+}
+
+function updateKpi(summary) {
+  KPI.sales = summary.totalRevenue;
+  KPI.cups = summary.totalItems;
+  KPI.customers = summary.uniqueCustomers;
+}
+
+const state = {
+  tab: 'customers',
+  selected: 'ครูต๋อง',
+  query: '',
+  pasteOpen: false,
+  showAll: false,
+  pasteMessage: '',
+  pasteError: false,
+};
+
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => [...document.querySelectorAll(sel)];
+
+function icon(name, size = 18) {
+  const icons = {
+    search: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>`,
+    filter: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 5h16l-6.2 7.4V19l-3.6 2v-6.6L4 5z"/></svg>`,
+    calc: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="2"/><line x1="8" y1="7" x2="16" y2="7"/></svg>`,
+    gift: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 12h18M12 8c-2-2-5-2-5 0s3 2 5 0 5-2 5 0-3 2-5 0"/></svg>`,
+    paste: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>`,
+    cup: `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6 8h12v2a6 6 0 01-6 6 6 6 0 01-6-6V8zm14 2h2v1a4 4 0 01-4 4h-1.1A8 8 0 0022 10z"/></svg>`,
+  };
+  return icons[name] || '';
+}
+
+const chartSales = `<svg class="chart" viewBox="0 0 120 32" preserveAspectRatio="none">
+  <defs><linearGradient id="gG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22c55e" stop-opacity=".45"/><stop offset="100%" stop-color="#22c55e" stop-opacity="0"/></linearGradient></defs>
+  <polygon points="0,24 20,20 40,22 60,14 80,16 100,10 120,6 120,32 0,32" fill="url(#gG)"/>
+  <polyline points="0,24 20,20 40,22 60,14 80,16 100,10 120,6" fill="none" stroke="#22c55e" stroke-width="2.5"/>
+</svg>`;
+
+const chartCups = `<svg class="chart" viewBox="0 0 120 32">
+  <rect x="6" y="14" width="12" height="18" rx="3" fill="#3b82f6" opacity=".45"/>
+  <rect x="26" y="6" width="12" height="26" rx="3" fill="#60a5fa"/>
+  <rect x="46" y="12" width="12" height="20" rx="3" fill="#3b82f6" opacity=".65"/>
+  <rect x="66" y="2" width="12" height="30" rx="3" fill="#2563eb"/>
+  <rect x="86" y="10" width="12" height="22" rx="3" fill="#3b82f6" opacity=".75"/>
+</svg>`;
+
+const chartCustomers = `<svg class="chart" viewBox="0 0 120 32" preserveAspectRatio="none">
+  <polyline points="0,18 30,10 60,20 90,8 120,14" fill="none" stroke="#c084fc" stroke-width="2.5"/>
+  <circle cx="30" cy="10" r="3" fill="#a855f7"/><circle cx="90" cy="8" r="3" fill="#a855f7"/>
+</svg>`;
+
+function renderCups(progress) {
+  return Array.from({ length: 10 }, (_, i) =>
+    `<span class="cup-dot ${i < progress ? 'on' : ''}">${icon('cup')}</span>`
+  ).join('');
+}
+
+function renderTransactions(txs) {
+  if (!txs.length) return '<p class="empty-tx">ไม่มีรายการวันนี้</p>';
+  return txs.map((tx) => {
+    const cls = tx.type === 'free' ? 'free' : 'paid';
+    return `<div class="tx-row ${cls}">
+      <span class="tx-time">${tx.time}</span>
+      <span class="tx-name">${tx.name}</span>
+      <span class="tx-price">${tx.price}</span>
+      <span class="tx-pts">${tx.change}</span>
+    </div>`;
+  }).join('');
+}
+
+function renderFormula() {
+  const data = customers.find((c) => c.name === state.selected) || customers.find((c) => c.name === 'ครูต๋อง');
+  if (!data) return '';
+  const c = calcPoints(data);
+  const deduct = data.freeCupsUsed * 10;
+  return `
+    <section class="card formula-card" id="formulaBlock">
+      <div class="formula-head">
+        <span class="formula-ico">${icon('calc')}</span>
+        สูตรการคำนวณแต้ม
+      </div>
+      <div class="formula-eq big">
+        <em class="c-green">${data.pointsOriginal}</em><i>+</i>
+        <em class="c-orange">${c.pointsAdded}</em><i>−</i>
+        <em class="c-red">${deduct}</em><i>=</i>
+        <em class="c-blue">${c.pointsRemaining} แต้ม</em>
+      </div>
+      <p class="formula-rule">แต้มคงเหลือ = แต้มเดิม + แก้วที่ชำระเงินจริง − (แก้วฟรี × 10)</p>
+      <div class="formula-grid">
+        <div><small>แต้มเดิม</small><strong class="c-green">${data.pointsOriginal}</strong></div>
+        <div><small>แต้มเพิ่ม</small><strong class="c-orange">+${c.pointsAdded}</strong></div>
+        <div><small>แต้มที่ใช้</small><strong class="c-red">−${c.pointsUsed}</strong></div>
+        <div><small>แต้มคงเหลือ</small><strong class="c-blue">${c.pointsRemaining}</strong></div>
+      </div>
+    </section>`;
+}
+
+function visibleCustomers() {
+  const q = state.query.trim().toLowerCase();
+  const filtered = customers.filter((c) => !q || c.name.toLowerCase().includes(q));
+  if (q || state.showAll) return filtered;
+  return filtered.slice(0, 10);
+}
+
+function customerListHTML() {
+  return visibleCustomers()
+    .map((c) => `
+      <button type="button" class="customer-item ${c.name === state.selected ? 'active' : ''}" data-name="${c.name}">
+        <span class="rank">${c.rank}</span>
+        ${c.name === state.selected ? '<span class="star">★</span>' : '<span class="star ghost"></span>'}
+        <span class="name">${c.name}</span>
+        <span class="pts">${calcPoints(c).pointsRemaining} แต้ม</span>
+      </button>`)
+    .join('');
+}
+
+function detailHTML() {
+  const data = customers.find((c) => c.name === state.selected);
+  if (!data) return '';
+  const c = calcPoints(data);
+  const progress = c.progress;
+  const reward = c.reward;
+  const displayCups = c.pointsRemaining;
+
+  return `
+    <section class="detail card border-blue">
+      <div class="detail-top">
+        <h2>${data.name} <span class="star">★</span></h2>
+        <p class="detail-pts">${displayCups} <span>แต้ม</span></p>
+      </div>
+      <div class="reward card-inner">
+        <div class="reward-ico">${icon('gift')}</div>
+        <div>
+          <strong>แลกฟรีได้ ${reward} แก้ว</strong>
+          <span>(10 แต้ม = 1 แก้วฟรี)</span>
+        </div>
+      </div>
+      <div class="progress-wrap">
+        <label>ความคืบหน้า 10 แต้ม</label>
+        <div class="cups">${renderCups(progress)}</div>
+        <p class="prog-count">${progress} / 10 แต้ม</p>
+      </div>
+      <div class="tx-block">
+        <h3>รายการวันนี้ (${META.updateDate})</h3>
+        ${renderTransactions(data.transactions)}
+        <button type="button" class="link-btn">ดูประวัติทั้งหมด →</button>
+      </div>
+    </section>`;
+}
+
+function salesTabHTML() {
+  const data = customers.find((c) => c.name === state.selected);
+  const txs = data?.transactions?.filter((t) => t.type === 'paid') || [];
+  const total = txs.reduce((s, t) => s + t.price, 0);
+  return `
+    <section class="card sales-tab">
+      <h3>ยอดขายวันนี้ — ${data?.name || ''}</h3>
+      <p class="sales-total">${total.toLocaleString()} <span>บาท</span></p>
+      ${renderTransactions(txs)}
+    </section>`;
+}
+
+function render() {
+  $('#app').innerHTML = `
+    <div class="phone">
+      <header class="top">
+        <div class="logo"><img src="./LOGOTB-circle.png" alt="TB Coffee"></div>
+        <div class="titles">
+          <h1>TB Coffee Dashboard</h1>
+          <p>ระบบสะสมแต้มและบันทึกยอดขาย · อัปเดต ${META.updateDate}</p>
+        </div>
+        <div class="online"><i></i>ออนไลน์</div>
+      </header>
+
+      <section class="kpi">
+        <article class="card kpi-card k-green">
+          <p>ยอดขายวันนี้</p>
+          <h2>${KPI.sales.toLocaleString()} <span>บาท</span></h2>
+          ${chartSales}
+        </article>
+        <article class="card kpi-card k-blue">
+          <p>แก้ววันนี้</p>
+          <h2>${KPI.cups} <span>แก้ว</span></h2>
+          ${chartCups}
+        </article>
+        <article class="card kpi-card k-purple">
+          <p>ลูกค้าวันนี้</p>
+          <h2>${KPI.customers} <span>คน</span></h2>
+          ${chartCustomers}
+        </article>
+      </section>
+
+      <nav class="tabs">
+        <button type="button" class="tab ${state.tab === 'sales' ? 'active' : ''}" data-tab="sales">ยอดขาย</button>
+        <button type="button" class="tab ${state.tab === 'customers' ? 'active' : ''}" data-tab="customers">ลูกค้า</button>
+      </nav>
+
+      <div class="search card">
+        ${icon('search')}
+        <input id="searchInput" type="search" placeholder="ค้นหาลูกค้า..." value="${state.query}">
+        ${icon('filter')}
+      </div>
+
+      <div class="split ${state.tab}">
+        <aside class="list card border-blue">
+          <div class="list-scroll ${state.showAll || state.query ? 'expanded' : ''}" id="customerList">${customerListHTML()}</div>
+          <button type="button" class="link-btn center" id="showAllBtn">${state.showAll ? 'แสดง Top 10' : `ดูทั้งหมด ${STATS.totalCustomers} คน`} →</button>
+        </aside>
+        <div class="detail-wrap" id="detailWrap">
+          ${state.tab === 'customers' ? detailHTML() : salesTabHTML()}
+        </div>
+      </div>
+
+      ${state.tab === 'customers' ? renderFormula() : ''}
+
+      <section class="card paste border-orange ${state.pasteOpen ? 'open' : ''}" id="pasteSection">
+        <button type="button" class="paste-head" id="pasteToggle">
+          <span class="paste-ico">${icon('paste')}</span>
+          <span>
+            <strong>วางข้อมูลยอดขาย</strong>
+            <small>วางข้อมูลยอดขายที่ต้องการคำนวณแต้ม</small>
+          </span>
+          <em class="arrow">›</em>
+        </button>
+        <div class="paste-body">
+          <textarea id="pasteInput" placeholder="ตัวอย่างรูปแบบ:
+19/06/2569
+1. อเมริกาโน่ 40 บาท ป้าจอย
+2. ลาเต้ 50 บาท ครูต๋อง
+3. มอคค่า ฟรี ป้าจอย"></textarea>
+          ${state.pasteMessage ? `<p class="paste-msg ${state.pasteError ? 'err' : 'ok'}">${state.pasteMessage}</p>` : ''}
+          <button type="button" class="btn-confirm" id="btnConfirm">ยืนยันข้อมูล</button>
+        </div>
+      </section>
+
+      <footer class="foot card border-mixed">
+        <div><span>👥</span><small>ลูกค้าทั้งหมด</small><b>${STATS.totalCustomers} คน</b></div>
+        <div><span>⭐</span><small>แต้มรวมทั้งหมด</small><b>${STATS.totalPoints.toLocaleString()} แต้ม</b></div>
+        <div><span>🕒</span><small>อัปเดตล่าสุด</small><b>${META.updateDate}</b></div>
+      </footer>
+    </div>`;
+
+  bind();
+}
+
+function bind() {
+  $$('.tab').forEach((el) => el.addEventListener('click', () => {
+    state.tab = el.dataset.tab;
+    render();
+  }));
+
+  bindCustomerClicks();
+
+  $('#searchInput')?.addEventListener('input', (e) => {
+    state.query = e.target.value;
+    $('#customerList').innerHTML = customerListHTML();
+    bindCustomerClicks();
+  });
+
+  $('#showAllBtn')?.addEventListener('click', () => {
+    state.showAll = !state.showAll;
+    render();
+  });
+
+  $('#pasteToggle')?.addEventListener('click', () => {
+    state.pasteOpen = !state.pasteOpen;
+    $('#pasteSection').classList.toggle('open', state.pasteOpen);
+  });
+
+  $('#btnConfirm')?.addEventListener('click', () => {
+    const raw = $('#pasteInput')?.value?.trim() ?? '';
+    if (!raw) {
+      state.pasteMessage = 'กรุณาวางข้อมูลยอดขายก่อนยืนยัน';
+      state.pasteError = true;
+      render();
+      return;
+    }
+
+    const parsed = parseSalesText(raw, META.updateDate);
+    const activeDay = parsed.days.at(-1);
+
+    if (!activeDay?.items.length) {
+      const sample = parsed.days[0]?.unparsedLines[0] || parsed.looseLines[0];
+      state.pasteMessage = sample
+        ? `อ่านข้อมูลไม่ได้: "${sample}" — ใช้รูปแบบ 1. อเมริกาโน่ 40 บาท ป้าจอย`
+        : 'ไม่พบรายการสั่งซื้อ — ใช้รูปแบบ 1. อเมริกาโน่ 40 บาท ป้าจอย';
+      state.pasteError = true;
+      render();
+      return;
+    }
+
+    if (activeDay.date) META.updateDate = activeDay.date;
+
+    const summary = summarizeDay(activeDay);
+    const result = applyDailySales(activeDay.items);
+    updateKpi(summary);
+
+    const warningText = result.warnings.length
+      ? ` (ข้าม ${result.warnings.length} รายการ)`
+      : '';
+    state.pasteMessage = `อัปเดต ${result.appliedCount} รายการ · ${result.customerCount} ลูกค้า · ยอดขาย ${summary.totalRevenue.toLocaleString()} บาท${warningText}`;
+    state.pasteError = result.warnings.length > 0;
+
+    const firstMatch = activeDay.items
+      .map((item) => findCustomer(item.customerName))
+      .find(Boolean);
+    if (firstMatch) state.selected = firstMatch.name;
+
+    state.pasteOpen = false;
+    render();
+  });
+}
+
+function bindCustomerClicks() {
+  $$('.customer-item').forEach((el) => el.addEventListener('click', () => {
+    state.selected = el.dataset.name;
+    render();
+  }));
+}
+
+render();
+</script>
+</body>
+</html>
