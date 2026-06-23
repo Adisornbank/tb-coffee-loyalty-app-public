@@ -1,0 +1,33 @@
+name: Sync main from gh-pages
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-src
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          path: main-repo
+      - name: Copy built assets from gh-pages to main
+        run: |
+          cp gh-src/index.html main-repo/index.html
+          mkdir -p main-repo/dist
+          cp gh-src/index.html main-repo/dist/index.html
+          cd main-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html dist/index.html
+          if ! git diff --staged --quiet; then
+            git commit -m "fix: sync full HTML bundle from gh-pages build"
+            git push
+          fi
