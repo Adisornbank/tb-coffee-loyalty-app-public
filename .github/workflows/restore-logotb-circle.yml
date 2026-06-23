@@ -1,0 +1,24 @@
+name: Restore LOGOTB-circle.png from b64 chunks
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Concatenate b64 parts and decode to PNG
+        run: |
+          cat assets/LOGOTB-circle.png.b64.part{1..5} | base64 -d > public/LOGOTB-circle.png
+          ls -la public/LOGOTB-circle.png
+          file public/LOGOTB-circle.png
+      - name: Commit restored PNG
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/LOGOTB-circle.png
+          if ! git diff --staged --quiet; then
+            git commit -m "assets: restore full LOGOTB-circle.png from b64 chunks"
+            git push
+          fi
