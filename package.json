@@ -1,0 +1,17 @@
+{
+  "name": "tb-coffee-dashboard",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "node scripts/build.mjs",
+    "build:vite": "vite build",
+    "preview": "vite preview --host",
+    "start": "node scripts/serve.mjs",
+    "test:console": "node scripts/check-console.mjs"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
+  }
+}
