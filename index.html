@@ -7,10 +7,166 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>PLACEHOLDER_STYLE</style>
+  <style>*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #050b16;
+  --glass: rgba(10, 24, 52, 0.72);
+  --glass-2: rgba(14, 32, 68, 0.55);
+  --text: #f2f6ff;
+  --muted: #8ba0c4;
+  --green: #22c55e;
+  --blue: #3b82f6;
+  --blue-hot: #2563eb;
+  --purple: #a855f7;
+  --orange: #f59e0b;
+  --red: #ef4444;
+  --radius: 16px;
+  --radius-sm: 12px;
+  --font: 'Noto Sans Thai', system-ui, sans-serif;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 90% 55% at 10% -5%, rgba(37, 99, 235, 0.22), transparent 55%),
+    radial-gradient(ellipse 70% 45% at 95% 5%, rgba(245, 158, 11, 0.1), transparent 50%),
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(20, 50, 110, 0.35), transparent 60%),
+    linear-gradient(180deg, #060e1c, #03070f);
+}
+
+.phone {
+  width: 100%;
+  max-width: 390px;
+  margin: 0 auto;
+  padding: 14px 12px 22px;
+  min-height: 100vh;
+}
+
+.card {
+  position: relative;
+  background: var(--glass);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 14px;
+}
+
+.logo {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  overflow: visible;
+  flex-shrink: 0;
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+  transform: scale(0.88);
+}
+
+.titles h1 {
+  font-size: 19px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #fde68a, #f59e0b 55%, #fbbf24);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.kpi {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  padding: 4px;
+  margin-bottom: 10px;
+}
+
+.tab.active {
+  background: linear-gradient(135deg, var(--blue-hot), #1d4ed8);
+  color: #fff;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 13px;
+  margin-bottom: 10px;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 0.92fr 1.08fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.customer-item.active {
+  border: 1.5px solid rgba(59, 130, 246, 0.7);
+  background: rgba(37, 99, 235, 0.22);
+}
+
+.formula-card {
+  padding: 14px 12px;
+  margin-bottom: 10px;
+}
+
+.paste-head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 13px;
+  border: 0;
+  cursor: pointer;
+}
+
+.foot {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 12px 8px;
+  text-align: center;
+}
+</style>
 </head>
 <body>
   <div id="app"></div>
-  <script>PLACEHOLDER_SCRIPT</script>
+  <script>/* FULL_SCRIPT_LOADED_FROM_DISK_37373 */</script>
 </body>
 </html>
